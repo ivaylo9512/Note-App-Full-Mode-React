@@ -10,5 +10,5 @@ export default function useEffectInitial(callback, state){
             return;
         }
         callback();
-    }, [state])
+    }, state)
 } 
