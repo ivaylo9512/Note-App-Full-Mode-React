@@ -1,4 +1,5 @@
 export default function register(){
+    const [pageIndex, setPageIndex] = useState(0)
     const [registeredUser, fetchRegister, error] = useRequest({
         initialUrl: `${localStorage.getItem('BaseUrl')}/api/users/${localStorage.getItem('LongPolling')}/register`, 
         shouldThrow: false, 
@@ -66,19 +67,32 @@ export default function register(){
         e.preventDefault()
         fetchRegister({body:{username, password, repeat, firstName, lastName, country, age}})
     }
+
+    const setPage = (e, page) => {
+        e.preventDefault()
+        setPageIndex(page)
+    }
     
     return(
-        <form onSubmit={(e) => setPage(e, 1)}>
-            {usernameInput}
-            {passwordInput}
-            {repeatInput}
-            {firstNameInput}
-            {lastNameInput}
-            {countryInput}
-            {ageInput}
-            <button type='submit'>next</button>
-            <span>Already have an account?<Link to='/login'> Log in.</Link></span>
-            <span>{error}</span>
-        </form>
+        <section>
+            {pageIndex == 0 ?
+                <form onSubmit={(e) => setPage(e, 1)}>
+                    {usernameInput}
+                    {passwordInput}
+                    {repeatInput}
+                    <button type='submit'>next</button>
+                    <span>Already have an account?<Link to='/login'> Log in.</Link></span>
+                    <span>{error}</span>
+                </form> :
+                <form onSubmit={register}>
+                    {firstNameInput}
+                    {lastNameInput}
+                    {countryInput}
+                    {ageInput}
+                    <button onClick={(e) => setPage(e, 0)} >back</button>
+                    <button>register</button>
+                </form>
+            }
+        </section>
     )
 }

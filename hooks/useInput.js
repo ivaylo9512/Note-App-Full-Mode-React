@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import useEffectInitial from './useEffectInitial';
 
-function useInput({type, placeholder, name, validationRules, equalsValue, equalsName}) {
+export default function useInput({type, placeholder, name, validationRules, equalsValue, equalsName}) {
     const [value, setValue] = useState('');
     const inputElement = useRef();
 
