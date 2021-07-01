@@ -34,6 +34,33 @@ export default function register(){
         equalsValue: password, 
         equalsName: 'Passwords'
     }) 
+    const [firstName, firstNameInput] = useInput({
+        type: 'text', 
+        placeholder: 'first name', 
+        validationRules: {
+            required: true
+        }
+    }) 
+    const [lastName, lastNameInput] = useInput({
+        type: 'text', 
+        placeholder: 'last name', 
+        validationRules: {
+            required: true}
+        }) 
+    const [country, countryInput] = useInput({
+        type: 'text', 
+        placeholder: 'country', 
+        validationRules: {
+            required: true
+        }
+    }) 
+    const [age, ageInput] = useInput({
+        type: 'number', 
+        placeholder: 'age', 
+        validationRules: {
+            required: true
+        }
+    }) 
 
     const register = (e) => {
         e.preventDefault()
@@ -45,6 +72,10 @@ export default function register(){
             {usernameInput}
             {passwordInput}
             {repeatInput}
+            {firstNameInput}
+            {lastNameInput}
+            {countryInput}
+            {ageInput}
             <button type='submit'>next</button>
             <span>Already have an account?<Link to='/login'> Log in.</Link></span>
             <span>{error}</span>
