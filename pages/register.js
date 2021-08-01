@@ -1,71 +1,16 @@
-export default function register(){
+import useInput from '../hooks/useInput';
+import usePasswordInput from '../hooks/usePasswordInput';
+import { useState } from 'react';
+
+const Register = () => {
     const [pageIndex, setPageIndex] = useState(0)
-    const [registeredUser, fetchRegister, error] = useRequest({
-        initialUrl: `${localStorage.getItem('BaseUrl')}/api/users/${localStorage.getItem('LongPolling')}/register`, 
-        shouldThrow: false, 
-        callback: 
-        setAuthUser, 
-        type: 'post'
-    })
-    
-    const [username, usernameInput] = useInput({
-        type: 'text', 
-        placeholder: 'username', 
-        validationRules: {
-            minLength: 6,
-            maxLength: 15,
-            required: true
-        }
-    }) 
-    const [password, passwordInput] = useInput({
-        type: 'password', 
-        placeholder: 'password', 
-        validationRules:{
-            minLength: 7,
-            maxLength: 25,
-            required: true
-        }
-    }) 
-    const [repeat, repeatInput] = useInput({
-        type: 'password', 
-        placeholder: 'repeat', 
-        validationRules: {
-            required: true,
-        },
-        equalsValue: password, 
-        equalsName: 'Passwords'
-    }) 
-    const [firstName, firstNameInput] = useInput({
-        type: 'text', 
-        placeholder: 'first name', 
-        validationRules: {
-            required: true
-        }
-    }) 
-    const [lastName, lastNameInput] = useInput({
-        type: 'text', 
-        placeholder: 'last name', 
-        validationRules: {
-            required: true}
-        }) 
-    const [country, countryInput] = useInput({
-        type: 'text', 
-        placeholder: 'country', 
-        validationRules: {
-            required: true
-        }
-    }) 
-    const [age, ageInput] = useInput({
-        type: 'number', 
-        placeholder: 'age', 
-        validationRules: {
-            required: true
-        }
-    }) 
+    const [registerValues, { usernameInput, passwordInput, repeatPasswordInput, birthInput, emailInput, firstNameInput, lastNameInput }] = useCreateFields(); 
 
     const register = (e) => {
         e.preventDefault()
-        fetchRegister({body:{username, password, repeat, firstName, lastName, country, age}})
+
+        const {repeatPassword, ...registerUser} = registerValues;
+        fetchRegister({body: registerUser})
     }
 
     const setPage = (e, page) => {
@@ -79,7 +24,8 @@ export default function register(){
                 <form onSubmit={(e) => setPage(e, 1)}>
                     {usernameInput}
                     {passwordInput}
-                    {repeatInput}
+                    {repeatPasswordInput}
+                    {emailInput}
                     <button type='submit'>next</button>
                     <span>Already have an account?<Link to='/login'> Log in.</Link></span>
                     <span>{error}</span>
@@ -87,8 +33,7 @@ export default function register(){
                 <form onSubmit={register}>
                     {firstNameInput}
                     {lastNameInput}
-                    {countryInput}
-                    {ageInput}
+                    {birthInput}
                     <button onClick={(e) => setPage(e, 0)} >back</button>
                     <button>register</button>
                 </form>
@@ -96,3 +41,76 @@ export default function register(){
         </section>
     )
 }
+export default Register
+
+const useCreateFields = () => {
+    const [username, usernameInput] = useInput({
+        name: 'username',
+        placeholder: 'username',
+        autoComplete: 'username',
+        validationRules: {
+            required: true, 
+            minLength: 8, 
+            maxLength: 20}
+        },
+    )
+
+    const [password, passwordInput] = usePasswordInput({
+        name: 'password',
+        type: 'password',
+        autoComplete: 'new-password',
+        placeholder: 'password',
+        validationRules: {
+            minLength: 10,
+            maxLength: 22,
+            required: true
+        }
+    })
+
+    const [repeatPassword, repeatPasswordInput] = usePasswordInput({
+        name: 'repeat-password',
+        type: 'password',
+        autoComplete: 'new-password',
+        placeholder: 'repeat',
+        validationRules:{
+            required: true
+        },
+        equalValue: password,
+        equalName: 'Passwords'
+    })
+
+    const [firstName, firstNameInput] = useInput({
+        placeholder: 'First name' , 
+        name: 'firstName', 
+        validationRules: {
+            required: true
+        } 
+    })
+
+    const [lastName, lastNameInput] = useInput({
+        placeholder: 'Last name' , 
+        name: 'lastName', 
+        validationRules: {
+            required: true
+        } 
+    })
+
+    const [birth, birthInput] = useInput({
+        type: 'date',
+        name: 'birth', 
+        validationRules:{
+            required: true,
+            min: '1890-01-01',
+            max: new Date().toISOString().split('T')[0]
+        } 
+    })
+
+    const [email, emailInput] = useInput({
+        type: 'email',
+        placeholder: 'email',
+        name: 'email',
+        autoComplete: 'email'
+    })
+
+    return [{username, password, repeatPassword, firstName, lastName, email, birth}, {usernameInput, passwordInput, repeatPasswordInput, firstNameInput, lastNameInput, emailInput, birthInput}]
+}   
