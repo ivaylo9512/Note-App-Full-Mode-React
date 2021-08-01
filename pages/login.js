@@ -1,13 +1,17 @@
-export default function login(){
-    const [usernameValue, usernameInput] = useInput({ type: 'text', placeholder: 'text', name: 'username'})
-    const [passwordValue, passwordInput] = useInput({ type: 'password', placeholder: 'password', name: 'password'})
+import useRequest from "../hooks/useRequest"
+import usePasswordInput from "../hooks/usePasswordInput";
+
+const Login = () =>{
+    const [{username, password}, {usernameInput, passwordInput}] = useCreateInputs();
+
+    const [fetchRequest, data, error] = useRequest({ type: 'post', inititalUrl})
     const [error, setError] = useState()
     
     const login = (e) => {
         e.preventDefault()
         fetchLogin({body:{username, password}})
     }
-    
+
     return(
         <section>
             <form onSubmit={login}>
@@ -20,3 +24,27 @@ export default function login(){
         </section>
     )
 }
+
+const useCreateInputs = () => {
+    const [username, username] = useInput({
+        placeholder: 'username', 
+        name: 'username',
+        validationRules: {
+            required: true
+        }
+    });
+
+    const [password, passwordInput] = usePasswordInput({
+        placeholder: 'password', 
+        name: 'password', 
+        type: 'password',
+        validationRules: {
+            required: true
+        },
+        autoComplete: 'current-password',
+    });
+
+    return [{username, password}, {usernameInput, passwordInput}]
+}
+
+export default Login
