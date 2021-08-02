@@ -1,39 +1,52 @@
 import useInput from '../hooks/useInput';
 import usePasswordInput from '../hooks/usePasswordInput';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const Register = () => {
     const [pageIndex, setPageIndex] = useState(0)
     const [registerValues, { usernameInput, passwordInput, repeatPasswordInput, birthInput, emailInput, firstNameInput, lastNameInput }] = useCreateFields(); 
 
-    const register = (e) => {
-        e.preventDefault()
-
-        const {repeatPassword, ...registerUser} = registerValues;
-        fetchRegister({body: registerUser})
-    }
+    const {loading, error} = useSelector(state => state.authenticate.registerRequest)
+    const dispatch = useDispatch();
 
     const setPage = (e, page) => {
         e.preventDefault()
         setPageIndex(page)
     }
+ 
+    const register = (e) => {
+        e.preventDefault();
+        const {repeatPassword, ...registerObject} = registerValues;
+
+        dispatch(registerRequest(registerObject))
+    }
+
+    useEffect(() => {
+        const {username, password, email} = error || {};
+
+        if(username || password || email){
+            setPageIndex(0);
+        }
+    },[error])
     
     return(
         <section>
             {pageIndex == 0 ?
                 <form onSubmit={(e) => setPage(e, 1)}>
-                    {usernameInput}
-                    {passwordInput}
-                    {repeatPasswordInput}
-                    {emailInput}
+                    <InputWithError input={usernameInput} error={error?.username}/>
+                    <InputWithError input={passwordInput} error={error?.password}/>
+                    <InputWithError input={repeatPasswordInput} error={error?.password}/>
+                    <InputWithError input={emailInput} error={error?.email}/>
                     <button type='submit'>next</button>
                     <span>Already have an account?<Link to='/login'> Log in.</Link></span>
                     <span>{error}</span>
                 </form> :
                 <form onSubmit={register}>
-                    {firstNameInput}
-                    {lastNameInput}
-                    {birthInput}
+                    <InputWithError input={firstNameInput} error={error?.firstName}/>
+                    <InputWithError input={lastNameInput} error={error?.lastName}/>
+                    <InputWithError input={birthInput} error={error?.birth}/>
                     <button onClick={(e) => setPage(e, 0)} >back</button>
                     <button>register</button>
                 </form>
