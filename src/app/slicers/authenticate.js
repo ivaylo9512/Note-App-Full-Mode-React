@@ -1,64 +1,66 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-if(typeof window != 'undefined'){
-    console.log(localStorage.getItem('user'))
-}
 const user = typeof window != 'undefined' && localStorage.getItem('user') 
     ? JSON.parse(localStorage.getItem('user'))
     : undefined;
 
 const initialState = {
     user,
+    isAuth: !!user,
     registerRequest: {
-        loading: false,
-        errorMessage: undefined
+        isLoading: false,
+        error: null
     },
     loginRequest: {
-        loading: false,
-        error: undefined
+        isLoading: false,
+        error: null
     }
 }
 
-export const authenticateSlice = createSlice({
+const authenticateSlice = createSlice({
     name: 'authenticate',
     initialState,
     reducers: {
-        setUser: (state, action) => {
-            state.user = action.payload;
-        },
-        removeUser: () => {
-            state.user = null
-        },
         loginRequest: (state) => {
-            state.loginRequest = {
-                loading: true,
-                error: undefined
-            }
+            state.loginRequest.isLoading = true;
+            state.loginRequest.error = null;
         },
         registerRequest: (state) => {
-            state.registerRequest = {
-                loading: true,
-                error: undefined
-            }
+            state.registerRequest.isLoading = true;
+            state.registerRequest.error = null;
         },
-        onLoginComplete: (state, action) => {
-            const { user, error } = action.payload
-            state.user = user;
-            state.loginRequest = {
-                loading: false,
-                error
-            }
+        onLoginComplete: (state, {payload}) => {
+            state.user = payload
+            state.isAuth = true;
+            state.loginRequest.isLoading = false;
+            state.loginRequest.error = null;
         },
-        onRegisterComplete: (state, action) => {
-            const { user, error } = action.payload
-            state.user = user;
-            state.registerRequest = {
-                loading: false,
-                error
-            }
-        }
+        onLoginError: (state, {payload}) => {
+            state.loginRequest.isLoading = false;
+            state.loginRequest.error = payload;
+        },
+        onRegisterComplete: (state, {payload}) => {
+            state.user = payload
+            state.isAuth = true;
+            state.registerRequest.isLoading = false;
+            state.registerRequest.error = null;
+        },
+        onRegisterError: (state, {payload}) => {
+            state.registerRequest.isLoading = false;
+            state.registerRequest.error = payload;
+        },
+        onLogout: (state, {payload}) => {
+            state.loginRequest.error = payload
+            state.user = undefined;
+            state.isAuth = false;
+        },
     }
 })
 
-export const { setUser, removeUser, loginRequest, registerRequest, onLoginComplete, onRegisterComplete } = authenticateSlice.actions
+export const { removeUser, loginRequest, registerRequest, onLoginComplete, onLoginError, onRegisterComplete, onRegisterError } = authenticateSlice.actions
 export default authenticateSlice.reducer
+
+export const getLoginRequest = state => state.authenticate.loginRequest;
+export const getRegisterRequest = state => state.authenticate.registerRequest;
+export const getUser = state => state.authenticate.user;
+export const getIsAuth = state => state.authenticate.isAuth;
