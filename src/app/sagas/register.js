@@ -16,16 +16,13 @@ function* register({payload}){
 
     const data = yield response.json();
     if(response.ok){
-        yield put(onRegisterComplete({
-            user: data,
-        }))
+        yield put(onRegisterComplete(data));
+
 
         localStorage.setItem('Authorization', response.headers.get('Authorization'));
         localStorage.setItem('user', data);
         Router.push('/')
     }else{
-        yield put(onRegisterComplete({
-            error: data,
-        }))
+        yield put(onRegisterError(data));
     }
 }

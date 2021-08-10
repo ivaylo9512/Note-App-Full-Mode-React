@@ -18,16 +18,13 @@ function* login({payload}) {
     const data = yield response.text();
 
     if(response.ok){
-        yield put(onLoginComplete({
-            user: JSON.parse(data)
-        }))
+        yield put(onLoginComplete(JSON.parse(data)));
+
 
         localStorage.setItem('Authorization', response.headers.get('Authorization'));
         localStorage.setItem('user', data);
         Router.push('/')
     }else{
-        yield put(onLoginComplete({
-            error: data,
-        }))
+        yield put(onLoginError(data));
     }
 }

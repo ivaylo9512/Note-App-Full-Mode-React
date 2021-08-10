@@ -1,6 +1,7 @@
 import { takeLatest, select, put } from 'redux-saga/effects';
 import { BASE_URL } from '../../constants';
 import { getNotesData, onNotesComplete, onNotesError} from '../slices/notesSlice';
+import splitArray from '../../utils/splitArray';
 
 export default takeLatest('notes/notesRequest', getNotes);
 
@@ -29,15 +30,6 @@ function* getNotes({payload: query}){
         yield put (onNotesError(response.text()));
     }
 
-}
-
-const splitArray = (notes, take) => {
-    return notes.reduce((result, note, i) =>  {
-        const page = Math.floor(i / take);
-        result[page] = result[page] ? (result[page].push(note), result[page]) : [note];
-
-        return result;
-    },[])
 }
 
 const getData = (query, data) => {
