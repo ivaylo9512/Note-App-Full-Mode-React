@@ -1,5 +1,5 @@
-import useInput from '../hooks/useInput';
-import usePasswordInput from '../hooks/usePasswordInput';
+import useInput from '../../hooks/useInput';
+import usePasswordInput from '../../hooks/usePasswordInput';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';

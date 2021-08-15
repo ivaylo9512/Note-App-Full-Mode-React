@@ -24,7 +24,7 @@ export default function useInput({type, placeholder, name, validationRules, equa
         validate(value)
     },[equalsValue])
 
-    const input = <input validationRules={...validationRules} type={type} ref={inputElement} name={name} placeholder={placeholder} value={value} onChange={changeValue} />
+    const input = <input {...validationRules} type={type} ref={inputElement} name={name} placeholder={placeholder} value={value} onChange={changeValue} />
 
     return [
         value, 

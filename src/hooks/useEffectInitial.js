@@ -1,7 +1,7 @@
 import { useEffect } from 'rect';
 import { useRef, useEffect } from 'react';
 
-export default function useEffectInitial(callback, state){
+export default function useEffectInitial(callback, dependencies){
     const isInitial = useRef(true);
 
     useEffect(()=> {
@@ -10,5 +10,5 @@ export default function useEffectInitial(callback, state){
             return;
         }
         callback();
-    }, state)
+    }, dependencies)
 } 

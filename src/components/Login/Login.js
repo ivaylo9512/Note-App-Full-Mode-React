@@ -1,5 +1,5 @@
 import useRequest from "../hooks/useRequest"
-import usePasswordInput from "../hooks/usePasswordInput";
+import usePasswordInput from "../../hooks/usePasswordInput";
 
 const Login = () =>{
     const [{username, password}, {usernameInput, passwordInput}] = useCreateInputs();
