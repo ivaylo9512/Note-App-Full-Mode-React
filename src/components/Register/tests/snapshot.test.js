@@ -30,4 +30,19 @@ describe("RegisterSnapshotTests", () => {
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
+    
+    it('renders correctly with passed errors props and page 0', () => {
+        const wrapper = createWrapper({isLoading: false, error: {username: 'Username is already taken.', password: 'Password must be between 10 and 20 characters.', email: 'Email is already taken.'}});
+
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+
+    it('renders correctly with passed errors props and page 1', () => {
+        const wrapper = createWrapper({isLoading: false, error: {country: 'Country is invalid.', age: 'Age is required.', firstName: 'First name is required.', lastName: 'Last name is required.'}});
+
+        const form = wrapper.find('form');
+        form.simulate('submit', { target: form, preventDefault: jest.fn() });
+
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
 });
