@@ -6,7 +6,7 @@ Enzyme.configure({
 });
 
 function findByTestid(id){
-  this.find(`[data-testid]=${id}`)
+  return this.find(`[data-testid='${id}']`)
 }
 ReactWrapper.prototype.findByTestid = findByTestid;
 ShallowWrapper.prototype.findByTestid = findByTestid;
