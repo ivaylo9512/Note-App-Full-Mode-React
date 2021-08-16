@@ -1,15 +1,18 @@
-import useRequest from "../hooks/useRequest"
-import usePasswordInput from "../../hooks/usePasswordInput";
+import React from 'react';
+import { Link } from 'react-router-dom'
+import useInput from '../../hooks/useInput';
+import { useSelector, useDispatch } from 'react-redux';
+import { getLoginRequest, loginRequest } from '../../app/slices/authenticateSlice';
+import usePasswordInput from '../../hooks/usePasswordInput';
 
-const Login = () =>{
-    const [{username, password}, {usernameInput, passwordInput}] = useCreateInputs();
+const Login = () => {
+    const [loginValues, {usernameInput, passwordInput}] = useCreateInputs();
+    const {isLoading, error} = useSelector(getLoginRequest);
+    const dispatch = useDispatch();
 
-    const [fetchRequest, data, error] = useRequest({ type: 'post', inititalUrl})
-    const [error, setError] = useState()
-    
     const login = (e) => {
-        e.preventDefault()
-        fetchLogin({body:{username, password}})
+        e.preventDefault();
+        dispatch(loginRequest(loginValues))
     }
 
     return(
@@ -26,9 +29,10 @@ const Login = () =>{
 }
 
 const useCreateInputs = () => {
-    const [username, username] = useInput({
+    const [username, usernameInput] = useInput({
         placeholder: 'username', 
         name: 'username',
+        testid: 'username',
         validationRules: {
             required: true
         }
@@ -38,6 +42,7 @@ const useCreateInputs = () => {
         placeholder: 'password', 
         name: 'password', 
         type: 'password',
+        testid: 'password',
         validationRules: {
             required: true
         },
