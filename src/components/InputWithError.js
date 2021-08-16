@@ -1,3 +1,4 @@
+import { getTestid } from "../hooks/useInput"
 
 const InputWithError = ({error, classname = '', input}) => {
 
@@ -5,12 +6,12 @@ const InputWithError = ({error, classname = '', input}) => {
         <div className={(error ? 'error ' : '') + classname}>
             {input}
             {error && 
-                <div>
+                <div data-testid={`${getTestid(input)}Error`}>
                     {error}
                 </div>
             }
         </div>
     )
 }
-
+export const getContainerTestid = input => `${getTestid(input)}Container`
 export default InputWithError
