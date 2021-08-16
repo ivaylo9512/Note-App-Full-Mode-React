@@ -27,19 +27,49 @@ describe('Login unit tests', () => {
         expect(wrapper.findByTestid('password').length).toBe(1);
     })
 
-    it('should render error', () => {
-        const wrapper = createWrapper({ isLoading: false, error: 'Bad credentials'});
+    it('should call dispatch login with input values', () => {
+        const mockDispatch = jest.fn();
+        const spy = jest.spyOn(Redux, 'useDispatch');
+        spy.mockReturnValue(mockDispatch);
 
-        expect(wrapper.findByTestid('error').text()).toBe('Bad credentials.')
+        const wrapper = createWrapper({ isLoading: false, error: null});
+
+        wrapper.findByTestid('username').simulate('change', { target: { value: 'username'} });
+        wrapper.findByTestid('password').simulate('change', { target: { value: 'password'} });
+        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+
+        expect(mockDispatch).toHaveBeenCalledWith(loginRequest({ username: 'username', password: 'password'}));
     })
 
-    it('should change inputs values', () => {
-        const wrapper = createWrapper({isLoading: false, error: null});
+    
+    it('should render error', () => {
+        const wrapper = createWrapper({ isLoading: false, error: 'Bad credentials.' });
 
-        wrapper.findByTestid('username').simulate('change', { target: { value: 'username' }});
-        wrapper.findByTestid('password').simulate('change', { target: { value: 'password' }});
+        expect(wrapper.findByTestid('error').text()).toBe('Bad credentials.');
+    })
 
-        expect(wrapper.findByTestid('username').prop('value')).toBe('username');
-        expect(wrapper.findByTestid('password').prop('value')).toBe('password');
+    it('should change input values', () => {
+        const wrapper = createWrapper({ isLoading: false, error: null });
+
+        wrapper.findByTestid('username').simulate('change', { target: { value: 'username'} });
+        wrapper.findByTestid('password').simulate('change', { target: { value: 'password'} });
+        
+        expect(wrapper.findByTestid('username').prop('value')).toBe('username'); 
+        expect(wrapper.findByTestid('password').prop('value')).toBe('password'); 
+
+    })
+
+    it('should render button', () => {
+        const wrapper = createWrapper({ isLoading: false, error: null });
+
+        expect(wrapper.findByTestid('login').length).toBe(1); 
+        expect(wrapper.findByTestid('login').prop('type')).toBe('submit');
+    })
+
+    it('should render redirect', () => {
+        const wrapper = createWrapper({ isLoading: false, error: null });
+
+        expect(wrapper.findByTestid('redirect').find(Link).prop('to')).toBe('/register');
+        expect(wrapper.findByTestid('redirect').text()).toBe(`Don't have an account? Sign up.`);
     })
 })
