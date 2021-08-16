@@ -176,9 +176,10 @@ exports[`RegisterSnapshotTests renders correctly page 1 1`] = `
       }
     />
     <InputWithError
-      data-testid="undefinedContainer"
+      data-testid="lastNameContainer"
       input={
         <input
+          data-testid="lastName"
           name="lastName"
           onChange={[Function]}
           placeholder="Last name"
@@ -390,9 +391,10 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
       }
     />
     <InputWithError
-      data-testid="undefinedContainer"
+      data-testid="lastNameContainer"
       input={
         <input
+          data-testid="lastName"
           name="lastName"
           onChange={[Function]}
           placeholder="Last name"

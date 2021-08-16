@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const user = typeof window != 'undefined' && localStorage.getItem('user') 
+const user = localStorage.getItem('user') 
     ? JSON.parse(localStorage.getItem('user'))
     : undefined;
 
@@ -57,7 +57,7 @@ const authenticateSlice = createSlice({
     }
 })
 
-export const { removeUser, loginRequest, registerRequest, onLoginComplete, onLoginError, onRegisterComplete, onRegisterError, onLogout } = authenticateSlice.actions
+export const { loginRequest, registerRequest, onLoginComplete, onLoginError, onRegisterComplete, onRegisterError, onLogout } = authenticateSlice.actions
 export default authenticateSlice.reducer
 
 export const getLoginRequest = state => state.authenticate.loginRequest;

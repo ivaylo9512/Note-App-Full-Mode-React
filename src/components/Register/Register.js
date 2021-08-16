@@ -109,6 +109,7 @@ const useCreateFields = () => {
     const [lastName, lastNameInput] = useInput({
         placeholder: 'Last name' , 
         name: 'lastName', 
+        testid: 'lastName', 
         validationRules: {
             required: true
         } 

@@ -1,15 +1,16 @@
 import React from 'react';
-import { getRegisterRequest } from '../../../../app/slices/authenticateSlice';
-import Register from '../../Register';
+import { getRegisterRequest } from '../../../app/slices/authenticateSlice';
+import Register from '../Register';
 import { shallow } from 'enzyme';
-import InputWithError from '../../../InputWithError';
-import { Link } from 'react-router-dom';
+import InputWithError from '../../InputWithError';
 
 jest.mock('react-redux', () => ({
     useSelector: jest.fn(fn => fn()),
     useDispatch: jest.fn()
 }))
-jest.mock('../../../../app/slices/authenticateSlice')
+
+jest.mock('../../../app/slices/authenticateSlice')
+
 const createWrapper = (value) => {
     getRegisterRequest.mockReturnValue(value);
     return shallow(<Register />)
@@ -38,7 +39,7 @@ describe('unit tests for Register', () =>{
         const inputs = wrapper.find(InputWithError);
         const buttons = wrapper.find('button');
 
-        expect(inputs.length).toEqual(4);
+        expect(inputs.length).toEqual(3);
         expect(buttons.at(0).text()).toBe('back');
         expect(buttons.at(1).text()).toBe('register');
 

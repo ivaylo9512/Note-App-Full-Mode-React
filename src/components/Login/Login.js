@@ -15,41 +15,35 @@ const Login = () => {
         dispatch(loginRequest(loginValues))
     }
 
-    return(
+    return (
         <section>
             <form onSubmit={login}>
                 {usernameInput}
                 {passwordInput}
-                <button>login</button>
-                <span>Don't have an account?<Link to='/register'> Sign up.</Link></span>
-                <span>{error}</span>
+                <button data-testid='login' type='submit'>login</button>
+                <span data-testid='redirect' >Don't have an account?<Link to='/register'> Sign up.</Link></span>
+                {error && <span data-testid='error'>{error}</span>}
             </form>
         </section>
     )
 }
+export default Login
 
 const useCreateInputs = () => {
     const [username, usernameInput] = useInput({
-        placeholder: 'username', 
+        placeholder:'username', 
         name: 'username',
-        testid: 'username',
-        validationRules: {
-            required: true
-        }
+        testid: 'username'
     });
 
     const [password, passwordInput] = usePasswordInput({
-        placeholder: 'password', 
-        name: 'password', 
-        type: 'password',
+        placeholder:'password', 
+        name: 'password',
         testid: 'password',
-        validationRules: {
-            required: true
-        },
         autoComplete: 'current-password',
     });
 
-    return [{username, password}, {usernameInput, passwordInput}]
+    return [{username, password}, {usernameInput, passwordInput}];
 }
 
 export default Login
