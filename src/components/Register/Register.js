@@ -2,7 +2,7 @@ import useInput from '../../hooks/useInput';
 import usePasswordInput from '../../hooks/usePasswordInput';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRegisterRequest } from '../../app/slices/authenticateSlice';
+import { getRegisterRequest, registerRequest } from '../../app/slices/authenticateSlice';
 import InputWithError, { getContainerTestid } from '../InputWithError';
 import { Link } from 'react-router-dom';
 
@@ -41,16 +41,15 @@ const Register = () => {
                     <InputWithError data-testid={getContainerTestid(emailInput)} input={emailInput} error={error?.email}/>
                     <InputWithError data-testid={getContainerTestid(passwordInput)} input={passwordInput} error={error?.password}/>
                     <InputWithError data-testid={getContainerTestid(repeatPasswordInput)} input={repeatPasswordInput} error={error?.password}/>
-                    <button type='submit'>next</button>
-                    <span>Already have an account?<Link to='/login'> Log in.</Link></span>
-                    <span>{error}</span>
+                    <button data-testid='next' type='submit'>next</button>
+                    <span data-testid='redirect'>Already have an account?<Link to='/login'> Log in.</Link></span>
                 </form> :
                 <form onSubmit={register}>
                     <InputWithError data-testid={getContainerTestid(firstNameInput)} input={firstNameInput} error={error?.firstName}/>
                     <InputWithError data-testid={getContainerTestid(lastNameInput)} input={lastNameInput} error={error?.lastName}/>
-                    <InputWithError data-testid={getContainerTestid(birthInput)} input={birthInput} error={error?.country}/>
-                    <button onClick={(e) => setPage(e, 0)} >back</button>
-                    <button>register</button>
+                    <InputWithError data-testid={getContainerTestid(birthInput)} input={birthInput} error={error?.birth}/>
+                    <button data-testid='back' onClick={(e) => setPage(e, 0)} >back</button>
+                    <button data-testid='register' type='submit'>register</button>
                 </form>
             }
         </section>

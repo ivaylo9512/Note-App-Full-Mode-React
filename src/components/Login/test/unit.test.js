@@ -72,7 +72,9 @@ describe('Login unit tests', () => {
     it('should render redirect', () => {
         const wrapper = createWrapper({ isLoading: false, error: null });
 
-        expect(wrapper.findByTestid('redirect').find(Link).prop('to')).toBe('/register');
-        expect(wrapper.findByTestid('redirect').text()).toBe(`Don't have an account? Sign up.`);
+        const redirect = wrapper.findByTestid('redirect');
+        
+        expect(redirect.find(Link).prop('to')).toBe('/register');
+        expect(redirect.text()).toBe(`Don't have an account? Sign up.`);
     })
 })

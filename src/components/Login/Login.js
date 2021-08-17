@@ -45,5 +45,3 @@ const useCreateInputs = () => {
 
     return [{username, password}, {usernameInput, passwordInput}];
 }
-
-export default Login

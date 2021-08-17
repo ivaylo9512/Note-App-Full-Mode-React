@@ -140,11 +140,14 @@ exports[`RegisterSnapshotTests renders correctly page 0 1`] = `
       }
     />
     <button
+      data-testid="next"
       type="submit"
     >
       next
     </button>
-    <span>
+    <span
+      data-testid="redirect"
+    >
       Already have an account?
       <Link
         to="/login"
@@ -152,7 +155,6 @@ exports[`RegisterSnapshotTests renders correctly page 0 1`] = `
          Log in.
       </Link>
     </span>
-    <span />
   </form>
 </section>
 `;
@@ -193,7 +195,7 @@ exports[`RegisterSnapshotTests renders correctly page 1 1`] = `
       input={
         <input
           data-testid="birth"
-          max="2021-08-16"
+          max="2021-08-17"
           min="1890-01-01"
           name="birth"
           onChange={[Function]}
@@ -204,11 +206,15 @@ exports[`RegisterSnapshotTests renders correctly page 1 1`] = `
       }
     />
     <button
+      data-testid="back"
       onClick={[Function]}
     >
       back
     </button>
-    <button>
+    <button
+      data-testid="register"
+      type="submit"
+    >
       register
     </button>
   </form>
@@ -222,6 +228,7 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
   >
     <InputWithError
       data-testid="usernameContainer"
+      error="Username is already taken."
       input={
         <input
           data-testid="username"
@@ -237,6 +244,7 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
     />
     <InputWithError
       data-testid="emailContainer"
+      error="Email is already taken."
       input={
         <input
           data-testid="email"
@@ -250,6 +258,7 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
     />
     <InputWithError
       data-testid="passwordContainer"
+      error="Password must be between 10 and 20 characters."
       input={
         <styled.div>
           <input
@@ -304,6 +313,7 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
     />
     <InputWithError
       data-testid="repeatPasswordContainer"
+      error="Password must be between 10 and 20 characters."
       input={
         <styled.div>
           <input
@@ -355,11 +365,14 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
       }
     />
     <button
+      data-testid="next"
       type="submit"
     >
       next
     </button>
-    <span>
+    <span
+      data-testid="redirect"
+    >
       Already have an account?
       <Link
         to="/login"
@@ -367,7 +380,6 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
          Log in.
       </Link>
     </span>
-    <span />
   </form>
 </section>
 `;
@@ -379,6 +391,7 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
   >
     <InputWithError
       data-testid="firstNameContainer"
+      error="First name is required."
       input={
         <input
           data-testid="firstName"
@@ -392,6 +405,7 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
     />
     <InputWithError
       data-testid="lastNameContainer"
+      error="Last name is required."
       input={
         <input
           data-testid="lastName"
@@ -408,7 +422,7 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
       input={
         <input
           data-testid="birth"
-          max="2021-08-16"
+          max="2021-08-17"
           min="1890-01-01"
           name="birth"
           onChange={[Function]}
@@ -419,11 +433,15 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
       }
     />
     <button
+      data-testid="back"
       onClick={[Function]}
     >
       back
     </button>
-    <button>
+    <button
+      data-testid="register"
+      type="submit"
+    >
       register
     </button>
   </form>

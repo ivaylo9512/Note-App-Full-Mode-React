@@ -25,7 +25,8 @@ saga.run(function*(){
 
 global.fetch = jest.fn();
 
-const user = { username: 'username', email: 'email@gmail.com', password: 'password', firstName: 'firstName', lastName: 'lastName', birth: '2020-02-02'}
+const user = { username: 'username', email: 'email@gmail.com', password: 'password', firstName: 'firstName', lastName: 'lastName', birth: '2020-02-02' };
+
 const changeFirstPageInputs = (wrapper) => {
     let inputs = wrapper.find('input');
 
@@ -124,10 +125,10 @@ describe('Register integration tests', () => {
 
         const inputs = changeFirstPageInputs(wrapper);
 
-        expect(inputs.findByTestid('username').length).toBe(1);
-        expect(inputs.findByTestid('email').length).toBe(1);
-        expect(inputs.findByTestid('password').length).toBe(1);
-        expect(inputs.findByTestid('repeatPassword').length).toBe(1);
+        expect(inputs.findByTestid('username').prop('value')).toBe(user.username);
+        expect(inputs.findByTestid('email').prop('value')).toBe(user.email);
+        expect(inputs.findByTestid('password').prop('value')).toBe(user.password);
+        expect(inputs.findByTestid('repeatPassword').prop('value')).toBe(user.password);
     })
 
     it('should change inputs values page 1', () => {
@@ -136,9 +137,9 @@ describe('Register integration tests', () => {
 
         const inputs = changeSecondPageInputs(wrapper);
 
-        expect(inputs.findByTestid('firstName').length).toBe(1);
-        expect(inputs.findByTestid('lastName').length).toBe(1);
-        expect(inputs.findByTestid('birth').length).toBe(1);
+        expect(inputs.findByTestid('firstName').prop('value')).toBe(user.firstName);
+        expect(inputs.findByTestid('lastName').prop('value')).toBe(user.lastName);
+        expect(inputs.findByTestid('birth').prop('value')).toBe(user.birth);
     })
 
 })
