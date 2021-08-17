@@ -1,24 +1,28 @@
 import React from 'react';
-import { loginRequest, getLoginRequest, getRegisterRequest } from '../../../app/slices/authenticateSlice';
+import { loginRequest } from '../../../app/slices/authenticateSlice';
 import { shallow } from 'enzyme';
 import Login from '../Login';
-
-jest.mock('react-redux', () => ({
-    useSelector: jest.fn().mockImplementation(fn => fn()),
-    useDispatch: () => jest.fn()
-}))
-
-jest.mock('../../../app/slices/authenticateSlice')
-
-const createWrapper = (state) => {
-    getRegisterRequest.mockReturnValue(state);
-
-    return shallow(
-        <Login />
-    )
-}
+import * as redux from 'react-redux';
+import { Link } from 'react-router-dom';
 
 describe('Login unit tests', () => {
+    let selectorSpy;
+    let dispatchSpy;
+
+    beforeAll(() => {
+        selectorSpy = jest.spyOn(redux, 'useSelector');
+    
+        dispatchSpy = jest.spyOn(redux, 'useDispatch');
+        dispatchSpy.mockReturnValue(jest.fn());
+    });
+
+    const createWrapper = (state) => {
+        selectorSpy.mockReturnValue(state);
+        return shallow(
+            <Login />
+        )
+    }
+
     it('should render inputs', () => {
         const wrapper = createWrapper({ isLoading: false, error: null });
 
@@ -29,8 +33,7 @@ describe('Login unit tests', () => {
 
     it('should call dispatch login with input values', () => {
         const mockDispatch = jest.fn();
-        const spy = jest.spyOn(Redux, 'useDispatch');
-        spy.mockReturnValue(mockDispatch);
+        dispatchSpy.mockReturnValue(mockDispatch);
 
         const wrapper = createWrapper({ isLoading: false, error: null});
 
