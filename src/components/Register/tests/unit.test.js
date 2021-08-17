@@ -42,10 +42,8 @@ describe('unit tests for Register', () =>{
 
     it('should render inputs, with page 0', () => {
         const wrapper = createWrapper({ isLoading: false, error: null });
-        const inputs = wrapper.find(InputWithError);
 
-        expect(inputs.length).toEqual(4);
-
+        expect(wrapper.find(InputWithError).length).toEqual(4);
         expect(wrapper.findByTestid('usernameContainer').length).toBe(1);
         expect(wrapper.findByTestid('emailContainer').length).toBe(1);
         expect(wrapper.findByTestid('passwordContainer').length).toBe(1);
@@ -56,15 +54,25 @@ describe('unit tests for Register', () =>{
         const wrapper = createWrapper({ isLoading: false, error: null });
         wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
 
-        const inputs = wrapper.find(InputWithError);
-        
-        expect(inputs.length).toEqual(3);
+        expect(wrapper.find(InputWithError).length).toEqual(3);
         expect(wrapper.findByTestid('firstNameContainer').length).toBe(1);
         expect(wrapper.findByTestid('lastNameContainer').length).toBe(1);
         expect(wrapper.findByTestid('birthContainer').length).toBe(1);
     })
 
-    it('should render first page 1', () => {
+    it('should render inputs with page 0 when back button is clicked', () => {
+        const wrapper = createWrapper({ isLoading: false, error: null });
+        
+        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() })
+        wrapper.findByTestid('back').simulate('click', { preventDefault: jest.fn() });
+
+        expect(wrapper.findByTestid('usernameContainer').length).toBe(1);
+        expect(wrapper.findByTestid('emailContainer').length).toBe(1);
+        expect(wrapper.findByTestid('passwordContainer').length).toBe(1);
+        expect(wrapper.findByTestid('repeatPasswordContainer').length).toBe(1);
+    })
+
+    it('should render button page 0', () => {
         const wrapper = createWrapper({ isLoading: false, error: null });
 
         expect(wrapper.findByTestid('next').length).toBe(1);
@@ -72,7 +80,7 @@ describe('unit tests for Register', () =>{
     })
 
 
-    it('should render first page 1', () => {
+    it('should render buttons with page 1', () => {
         const wrapper = createWrapper({ isLoading: false, error: null });
         wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
 

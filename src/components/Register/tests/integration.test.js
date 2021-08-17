@@ -59,7 +59,7 @@ describe('Register integration tests', () => {
         )
     }
 
-    it('should dispatch register return error change to first page and display errors', (done) => {
+    it('should dispatch register return error change to page 0 and display errors', (done) => {
         fetch.mockImplementationOnce(() => new Response(JSON.stringify(
             { username: 'Username is taken.', email: 'Email is taken.', password: 'Password must be atleast 10 characters.'}), { status: 422 }))
 
@@ -72,9 +72,31 @@ describe('Register integration tests', () => {
 
             const usernameError = wrapper.findByTestid('usernameError');
             if(usernameError.length > 0){
-                expect(wrapper.findByTestid('usernameError').text()).toBe('Username is taken.')
+                expect(usernameError.text()).toBe('Username is taken.')
                 expect(wrapper.findByTestid('emailError').text()).toBe('Email is taken.')
                 expect(wrapper.findByTestid('passwordError').text()).toBe('Password must be atleast 10 characters.')
+
+                done();
+            }
+        }, 200)
+    })
+
+    it('should dispatch register return errors with page 1', (done) => {
+        fetch.mockImplementationOnce(() => new Response(JSON.stringify(
+            { firstName: 'You must provide first name.', lastName: 'You must provide last name.', country: 'You must provide country.', birth: 'You must provide birth date.'}), { status: 422 }))
+
+        const wrapper = createWrapper({ isLoading: false, error: null });
+        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+
+        setInterval(() => {
+            wrapper.update();
+
+            const firstName = wrapper.findByTestid('firstNameError');
+            if(firstName.length > 0){
+                expect(firstName.text()).toBe('You must provide first name.')
+                expect(wrapper.findByTestid('lastNameError').text()).toBe('You must provide last name.')
+                expect(wrapper.findByTestid('birthError').text()).toBe('You must provide birth date.')
 
                 done();
             }
@@ -95,6 +117,28 @@ describe('Register integration tests', () => {
         wrapper.find('form').simulate('submit', { preventDefault: jest.fn()});
     
         expect(mockedDispatch).toHaveBeenCalledWith(registerRequest(user));
+    })
+
+    it('should change inputs values page 0', () => {
+        const wrapper = createWrapper();
+
+        const inputs = changeFirstPageInputs(wrapper);
+
+        expect(inputs.findByTestid('username').length).toBe(1);
+        expect(inputs.findByTestid('email').length).toBe(1);
+        expect(inputs.findByTestid('password').length).toBe(1);
+        expect(inputs.findByTestid('repeatPassword').length).toBe(1);
+    })
+
+    it('should change inputs values page 1', () => {
+        const wrapper = createWrapper();
+        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+
+        const inputs = changeSecondPageInputs(wrapper);
+
+        expect(inputs.findByTestid('firstName').length).toBe(1);
+        expect(inputs.findByTestid('lastName').length).toBe(1);
+        expect(inputs.findByTestid('birth').length).toBe(1);
     })
 
 })
