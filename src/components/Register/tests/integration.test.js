@@ -8,6 +8,7 @@ import Register from '../Register';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import * as redux from 'react-redux';
+import { act } from 'react-dom/test-utils';
 
 const saga = createSaga();
 const middleware = [...getDefaultMiddleware({ thunk: false }), saga];
@@ -60,48 +61,35 @@ describe('Register integration tests', () => {
         )
     }
 
-    it('should dispatch register return error change to page 0 and display errors', (done) => {
+    it('should dispatch register return error change to page 0 and display errors', async() => {
         fetch.mockImplementationOnce(() => new Response(JSON.stringify(
             { username: 'Username is taken.', email: 'Email is taken.', password: 'Password must be atleast 10 characters.'}), { status: 422 }))
 
         const wrapper = createWrapper({ isLoading: false, error: null });
         wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
-        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
 
-        setInterval(() => {
-            wrapper.update();
+        await act(async() => wrapper.find('form').simulate('submit', { preventDefault: jest.fn()}));
+        wrapper.update();
 
-            const usernameError = wrapper.findByTestid('usernameError');
-            if(usernameError.length > 0){
-                expect(usernameError.text()).toBe('Username is taken.')
-                expect(wrapper.findByTestid('emailError').text()).toBe('Email is taken.')
-                expect(wrapper.findByTestid('passwordError').text()).toBe('Password must be atleast 10 characters.')
-
-                done();
-            }
-        }, 200)
+        expect(wrapper.findByTestid('usernameError').text()).toBe('Username is taken.');
+        expect(wrapper.findByTestid('emailError').text()).toBe('Email is taken.');
+        expect(wrapper.findByTestid('passwordError').text()).toBe('Password must be atleast 10 characters.');
     })
 
-    it('should dispatch register return errors with page 1', (done) => {
+    it('should dispatch register return errors with page 1', async() => {
         fetch.mockImplementationOnce(() => new Response(JSON.stringify(
             { firstName: 'You must provide first name.', lastName: 'You must provide last name.', country: 'You must provide country.', birth: 'You must provide birth date.'}), { status: 422 }))
 
         const wrapper = createWrapper({ isLoading: false, error: null });
         wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
-        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+        
+        await act(async() => wrapper.find('form').simulate('submit', { preventDefault: jest.fn()}));
+        wrapper.update();
 
-        setInterval(() => {
-            wrapper.update();
+        expect(wrapper.findByTestid('firstNameError').text()).toBe('You must provide first name.');
+        expect(wrapper.findByTestid('lastNameError').text()).toBe('You must provide last name.');
+        expect(wrapper.findByTestid('birthError').text()).toBe('You must provide birth date.');
 
-            const firstName = wrapper.findByTestid('firstNameError');
-            if(firstName.length > 0){
-                expect(firstName.text()).toBe('You must provide first name.')
-                expect(wrapper.findByTestid('lastNameError').text()).toBe('You must provide last name.')
-                expect(wrapper.findByTestid('birthError').text()).toBe('You must provide birth date.')
-
-                done();
-            }
-        }, 200)
     })
 
     it('should dispatch register with inputs', () => {
