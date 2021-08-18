@@ -15,6 +15,7 @@ function* register({payload}){
     })
 
     const data = yield response.json();
+    
     if(response.ok){
         yield put(onRegisterComplete(data));
 
