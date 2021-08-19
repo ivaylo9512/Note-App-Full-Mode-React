@@ -1,4 +1,3 @@
-import React from 'react';
 import Register from '../Register';
 import { shallow } from 'enzyme';
 import * as redux from 'react-redux';
@@ -6,13 +5,21 @@ import * as redux from 'react-redux';
 describe("RegisterSnapshotTests", () => {
     let selectorSpy;
     let dispatchSpy;
-
+    
     beforeAll(() => {
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(1614636000000);
+
         selectorSpy = jest.spyOn(redux, 'useSelector');
         dispatchSpy = jest.spyOn(redux, 'useDispatch');
 
         dispatchSpy.mockReturnValue(jest.fn());
     })
+
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+
     const createWrapper = (state) => {
         selectorSpy.mockReturnValue(state);
         

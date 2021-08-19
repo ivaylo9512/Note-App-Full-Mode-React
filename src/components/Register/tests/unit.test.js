@@ -1,4 +1,3 @@
-import React from 'react';
 import Register from '../Register';
 import { shallow } from 'enzyme';
 import InputWithError from '../../InputWithError';

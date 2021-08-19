@@ -1,4 +1,3 @@
-import React from 'react';
 import useInput, { InputParams } from "./useInput"
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

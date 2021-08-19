@@ -1,4 +1,3 @@
-import React from 'react';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import createSaga from 'redux-saga';
 import LoginWatcher from '../../../app/sagas/login'
@@ -36,6 +35,15 @@ const createWrapper = () => {
 }
 
 describe('Login integration tests', () => {
+    beforeAll(() => {
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(1614636000000);
+    });
+    
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+
     it('should render error', async() => {
         fetch.mockImplementationOnce(() => new Response('Bad credentials.', { status: 401 }));
 

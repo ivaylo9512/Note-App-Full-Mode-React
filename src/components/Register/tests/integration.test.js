@@ -1,9 +1,8 @@
-import React from 'react';
 import createSaga from 'redux-saga';
 import { getDefaultMiddleware, configureStore } from '@reduxjs/toolkit';
 import authenticate, { registerRequest } from '../../../app/slices/authenticateSlice';
 import registerWatcher from '../../../app/sagas/register';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import Register from '../Register';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -50,6 +49,14 @@ const changeSecondPageInputs = (wrapper) => {
 }
 
 describe('Register integration tests', () => {
+    beforeAll(() => {
+        jest.useFakeTimers('modern');
+        jest.setSystemTime(new Date(1614636000000));
+    });
+    
+    afterAll(() => {
+        jest.useRealTimers();
+    });
 
     const createWrapper = () => {
         return mount(

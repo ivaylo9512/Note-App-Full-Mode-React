@@ -195,7 +195,7 @@ exports[`RegisterSnapshotTests renders correctly page 1 1`] = `
       input={
         <input
           data-testid="birth"
-          max="2021-08-17"
+          max="2021-03-01"
           min="1890-01-01"
           name="birth"
           onChange={[Function]}
@@ -422,7 +422,7 @@ exports[`RegisterSnapshotTests renders correctly with passed errors props and pa
       input={
         <input
           data-testid="birth"
-          max="2021-08-17"
+          max="2021-03-01"
           min="1890-01-01"
           name="birth"
           onChange={[Function]}
