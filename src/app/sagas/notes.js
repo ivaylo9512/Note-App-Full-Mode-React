@@ -1,5 +1,5 @@
 import { takeLatest, select, put } from 'redux-saga/effects';
-import { BASE_URL } from '../../constants';
+import { BASE_URL } from '../../appConstants';
 import { getNotesData, onNotesComplete, onNotesError} from '../slices/notesSlice';
 import splitArray from '../../utils/splitArray';
 

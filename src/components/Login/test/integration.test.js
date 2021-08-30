@@ -44,6 +44,10 @@ describe('Login integration tests', () => {
         jest.useRealTimers();
     });
 
+    beforeEach(() => {
+        fetch.mockClear();
+    })
+
     it('should render error', async() => {
         fetch.mockImplementationOnce(() => new Response('Bad credentials.', { status: 401 }));
 
@@ -56,5 +60,18 @@ describe('Login integration tests', () => {
         wrapper.update();
 
         expect(wrapper.findByTestid('error').text()).toBe('Bad credentials.');
+    })
+
+    it('should call fetch with data', async() => {
+        fetch.mockImplementationOnce(() => new Response(JSON.stringify({}), { status: 200 }))
+
+        const wrapper = createWrapper({ isLoading: false, error: null });
+        
+        wrapper.findByTestid('username').simulate('change', { target: { value: 'username' }});
+        wrapper.findByTestid('password').simulate('change', { target: { value: 'password' }});
+        
+        await act(async() => wrapper.find('form').simulate('submit', { preventDefault: jest.fn()}));
+
+        expect(fetch).toHaveBeenCalledWith('http://localhost:8080/users/login', {body: JSON.stringify({username: 'username', password: 'password'}), headers: {'Content-Type': 'Application/json'}, method: 'POST'})
     })
 })

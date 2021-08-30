@@ -25,7 +25,7 @@ saga.run(function*(){
 
 global.fetch = jest.fn();
 
-const user = { username: 'username', email: 'email@gmail.com', password: 'password', firstName: 'firstName', lastName: 'lastName', birth: '2020-02-02' };
+const user = { username: 'username', password: 'password', firstName: 'firstName', lastName: 'lastName', email: 'email@gmail.com', birth: '2020-02-02' };
 
 const changeFirstPageInputs = (wrapper) => {
     let inputs = wrapper.find('input');
@@ -99,22 +99,6 @@ describe('Register integration tests', () => {
 
     })
 
-    it('should dispatch register with inputs', () => {
-        const mockedDispatch = jest.fn();
-        const dispatchSpy = jest.spyOn(redux, 'useDispatch');
-        dispatchSpy.mockReturnValue(mockedDispatch);
-
-        const wrapper = createWrapper();
-        
-        changeFirstPageInputs(wrapper);
-        wrapper.find('form').simulate('submit', { preventDefault: jest.fn()});
-
-        changeSecondPageInputs(wrapper);
-        wrapper.find('form').simulate('submit', { preventDefault: jest.fn()});
-    
-        expect(mockedDispatch).toHaveBeenCalledWith(registerRequest(user));
-    })
-
     it('should change inputs values page 0', () => {
         const wrapper = createWrapper();
 
@@ -137,4 +121,33 @@ describe('Register integration tests', () => {
         expect(inputs.findByTestid('birth').prop('value')).toBe(user.birth);
     })
 
+    it('should call fetch with data', async() => {
+        fetch.mockImplementationOnce(() => new Response(JSON.stringify({}), { status: 200 }))
+
+        const wrapper = createWrapper({ isLoading: false, error: null });
+        
+        changeFirstPageInputs(wrapper);
+        wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+        
+        changeSecondPageInputs(wrapper);
+        await act(async() => wrapper.find('form').simulate('submit', { preventDefault: jest.fn()}));
+
+        expect(fetch).toHaveBeenCalledWith('http://localhost:8080/users/register', {body: JSON.stringify(user), headers: {'Content-Type': 'Application/json'}, method: 'POST'})
+    })
+
+    it('should dispatch register with inputs', () => {
+        const mockedDispatch = jest.fn();
+        const dispatchSpy = jest.spyOn(redux, 'useDispatch');
+        dispatchSpy.mockReturnValue(mockedDispatch);
+
+        const wrapper = createWrapper();
+        
+        changeFirstPageInputs(wrapper);
+        wrapper.find('form').simulate('submit', { preventDefault: jest.fn()});
+
+        changeSecondPageInputs(wrapper);
+        wrapper.find('form').simulate('submit', { preventDefault: jest.fn()});
+    
+        expect(mockedDispatch).toHaveBeenCalledWith(registerRequest(user));
+    })
 })
